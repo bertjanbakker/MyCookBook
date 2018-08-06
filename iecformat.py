@@ -31,7 +31,7 @@ def power_for(x):
 
 def prefix_name_for(x):
 	pri = exp_for(x)//3
-	return iec_prefixes[pri + 8][1]
+	return iec_prefixes[pri][1]
 
 def prefix_for(x):
         pri = exp_for(x)//3

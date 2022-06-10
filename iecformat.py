@@ -4,6 +4,22 @@
 # (C) 2018, bertjanbakker
 # License: GPL v 3
 
+"""
+IEC binary prefix formatter
+
+Formatter for number of bytes into a string with the
+appropriate number and binary prefix to denote
+powers of 1024 following standard IEC 80000-13:2008 clause 4.
+
+For example, the number 2048 is converted
+by using pretty(2048) into "2.0 kiB",
+meaning 2.0 kibibytes.
+
+See also
+- https://en.wikipedia.org/wiki/ISO/IEC_80000#cite_note-80000-13:2008-14
+- https://en.wikipedia.org/wiki/Byte#Multiple-byte_units
+"""
+
 import math, decimal
 from decimal import Decimal as D
 import sys

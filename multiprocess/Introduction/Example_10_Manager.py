@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 
 # example from python documentation
-
+import logging
+import time
 from multiprocessing import Process, Manager
+
+logging.basicConfig(level=logging.INFO)
 
 
 def f(d, l):
+    logging.info("executing f()")
     d[1] = "1"
     d["2"] = 2
     d[0.25] = None
@@ -17,9 +21,9 @@ if __name__ == "__main__":
         d = manager.dict()
         l = manager.list(range(10))
 
+        logging.info("before Process: (d, l) = (%s, %s)", d, l)
         p = Process(target=f, args=(d, l))
         p.start()
+        logging.info("after start Process: (d, l) = (%s, %s)", d, l)
         p.join()
-
-        print(d)
-        print(l)
+        logging.info("after join Process: (d, l) = (%s, %s)", d, l)

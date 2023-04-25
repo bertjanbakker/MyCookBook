@@ -2,7 +2,6 @@
 
 # example from python documentation
 import logging
-import time
 from multiprocessing import Process, Manager
 
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +22,10 @@ if __name__ == "__main__":
 
         logging.info("before Process: (d, l) = (%s, %s)", d, l)
         p = Process(target=f, args=(d, l))
+        logging.info("pid=%s, exitcode=%s", p.pid, p.exitcode)
         p.start()
         logging.info("after start Process: (d, l) = (%s, %s)", d, l)
+        logging.info("pid=%s, exitcode=%s", p.pid, p.exitcode)
         p.join()
         logging.info("after join Process: (d, l) = (%s, %s)", d, l)
+        logging.info("pid=%s, exitcode=%s", p.pid, p.exitcode)

@@ -20,9 +20,10 @@ def set_log_format(log_format: str) -> None:
     for handler in logger.handlers:
         handler.setFormatter(formatter)
 
-def main(args: argparse.Namespace) -> None:
+def main(args: argparse.Namespace) -> int:
     # Your script's main logic goes here
     logger.info(f"Hello, {args.name}! My constant is {MY_CONSTANT}")
+    return 0
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A simple command line script")
@@ -42,4 +43,4 @@ if __name__ == "__main__":
     set_log_format(LOG_FORMAT)
 
     # Call the main function with parsed arguments
-    main(args)
+    raise SystemExit(main(args))

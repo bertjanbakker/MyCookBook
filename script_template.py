@@ -2,14 +2,12 @@ import argparse
 import logging
 import os
 
-# Define a constant
+# Define constants
 MY_CONSTANT = 42
+LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 # Create a logger instance
 logger = logging.getLogger(__name)
-
-# Define a log format constant
-LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 def set_log_level(log_level: str) -> None:
     numeric_level = getattr(logging, log_level.upper(), None)

@@ -6,10 +6,11 @@ import os
 
 # Define constants
 MY_CONSTANT = 42
-LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
 # Create a logger instance
-logger = logging.getLogger(__name)
+logger = logging.getLogger(__name__)
+
 
 def set_log_level(log_level: str) -> None:
     numeric_level = getattr(logging, log_level.upper(), None)
@@ -17,19 +18,22 @@ def set_log_level(log_level: str) -> None:
         raise ValueError(f"Invalid log level: {log_level}")
     logger.setLevel(numeric_level)
 
+
 def set_log_format(log_format: str) -> None:
     formatter = logging.Formatter(log_format)
     for handler in logger.handlers:
         handler.setFormatter(formatter)
+
 
 def main(args: argparse.Namespace) -> int:
     # Your script's main logic goes here
     logger.info(f"Hello, {args.name}! My constant is {MY_CONSTANT}")
     return 0
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A simple command line script")
-    
+
     # Define command line arguments
     parser.add_argument("name", help="Name to greet")
 

@@ -1,0 +1,1 @@
+Dedicated logging is an example how to configure logging with a logging config file.

@@ -7,6 +7,7 @@ a.exe
 a.out
 
 *.bak
+*.log
 *.swp
 *.exe
 *.exe~

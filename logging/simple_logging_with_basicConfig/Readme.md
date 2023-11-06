@@ -5,4 +5,4 @@ Demonstrates
 - how to use the root logger
 - how to set the log level of the root logger
 - how to log to a file instead of the console
-- that new log lines are appended to an existing log file.
+- that new log lines are by default appended to an existing log file.

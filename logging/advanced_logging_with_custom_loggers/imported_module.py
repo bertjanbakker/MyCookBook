@@ -1,6 +1,6 @@
 import logging
 
-formatter = logging.Formatter("%(levelname)s:%(name)s:%(message)s")
+formatter = logging.Formatter("%(asctime)s - %(levelname)s:%(name)s:%(message)s")
 log_handler = logging.FileHandler("employee.log")
 log_handler.setFormatter(formatter)
 logger = logging.getLogger(__name__)

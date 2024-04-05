@@ -3,8 +3,6 @@ import logging
 import logging.config
 import pathlib
 
-logger = logging.getLogger("my_app")
-
 
 def setup_logging():
     config_file = pathlib.Path("logging_configs/config.json")
@@ -15,6 +13,7 @@ def setup_logging():
 
 def main():
     setup_logging()
+    logger = logging.getLogger("my_app")
     logger.debug("debug message")
     logger.info("info message")
     logger.warning("warning message")

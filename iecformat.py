@@ -59,5 +59,7 @@ def pretty(x, unit='B'):
         return ("%s %s%s" % (m, pr, unit))
 
 if __name__ == '__main__':
-    for x in (0.1, 1, 10, 1000, 1024, 2048, 234958234, 1024**2, 1024**4):
+    if len(sys.argv) > 1:
+        args = [int(a) for a in sys.argv[1:] if a.isdigit()]
+    for x in (*args, 0.1, 1, 10, 1000, 1024, 2048, 234958234, 1024**2, 1024**4):
         print("{} -> {}".format(x, pretty(x)))

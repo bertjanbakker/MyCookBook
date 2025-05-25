@@ -5,3 +5,4 @@ It demonstrates
 - subsequent calls to basicConfig are without effect which can be confusing
 - per module log formatting is not possible when sharing a logger
 - per module log file is not possible when sharing a logger
+- 

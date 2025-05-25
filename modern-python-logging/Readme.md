@@ -6,23 +6,31 @@ video: https://www.youtube.com/watch?v=9L77QExPmI0
 
 >Note 1: This is a really excellent video, much better than many of the other
 > ones about this subject.
->> Note2: text below is largely more or less verbatim from the video.
+>> Note2: text below is more or less verbatim from the video.
 
 ## Introduction
 The builtin logging package is the de facto standard for logging in Python.
+
+Many people just import logging, create a logger and call `logging.basicConfig()`.
+For the most basic cases this is totally fine, but I don't really recommend
+doing it this way. Why? Well, if you care to do logging at all, you probably
+want to log to two different places like to stdout and also to a file.
+
 >"Useful logging is multi-destination" (1:48)
 
 Perhaps you want to log higher priority things like errors and exceptions
 differently.
 
+To achieve this you can manually make handlers and filters in your code and add them to your
+loggers but don't do it that way.
+
 #### Modern Tip #1:
 >Don't manually create and add log handlers, use dictConfig(). (2:09)
 
-This let's you explicitly list all the necessary
+This lets you explicitly list all the necessary
 components of your logging setup namely the filters,
 formatters, handlers, and loggers.
-The basic config hides these objects and their relationships
-from you.
+The basic config hides these objects and their relationships from you.
 For useful logging it's much clearer to list them explicitly.
 
 ## Theory
@@ -34,7 +42,7 @@ Here is the one picture to keep in mind to see how it all fits together.
 
 ### Loggers and log records
 *Loggers* are the things that you actually use in your code.
-They have methods like .info() or .debug() or .error() you can call to do logging.
+They have methods like `.info()` or `.debug()` or `.error()` you can call to do logging.
 Calling such a method creates a *log record*, which is an object
 that contains all kinds of useful contextual information, including message,
 severity, current time, current thread, location in the source code, etc.
@@ -70,8 +78,8 @@ because it's the formatter that selects which data from the log record
 to actually include in the message. That depends on your specific
 use case. 
 
-This is almost the complete picture. Except, this is the picture for the root
-logger as in the root of the *tree* of loggers.
+This is almost the complete picture. Except, this is the picture for the *root
+logger* as in the root of the *tree* of loggers:
 
 ## The logging tree 
 ![The complete logging tree](images/02_the_complete_logging_tree.png)
@@ -86,7 +94,7 @@ So the A.X logger is a child of the A logger, which is a child of the root.
 By default, once a child logger is done handling a log record, it passes that record 
 up to its parent. Once again, if a record is dropped by a handler it will continue 
 moving on, to include propagating up to the parent. But if it's dropped by a logger, 
-then it stops and doesn't propagate.
+then it stops and doesn't propagate up.
 
 But all this is usually way more flexibility than you need and unnecessary complex
 in most cases.
@@ -107,8 +115,9 @@ propagate up to the root logger.
 #### Modern Tip #3:
 >(6:48) Don't use the root logger directly in your code. Use your own loggers.
 
-So don't use logging.info() and logging.debug() etc.
-Instead, use logger.info() where you acquire a non-root logger with logging.getLogger().
+So don't use `logging.info()` and `logging.debug()` etc.
+Instead, use `logger.info()` where you acquire a non-root logger with
+`logging.getLogger()`.
 This will create the logger first if it doesn't already exist.
 Remember, your logger doesn't have any handlers on it. We depend on propagation
 to send all events up to the root logger and have the root logger actually handle
@@ -117,7 +126,7 @@ the events.
 If you have a simple application a single non-root logger is all you need.
 
 #### Modern Tip #4:
->(7:31) One Logger per Major-Subcomponent. (Don't do getLogger(__name__) in every file.)
+>(7:31) One Logger per Major-Subcomponent. (Don't do `getLogger(__name__)` in every file.)
 
 ## Configuring the logging for common setups using dictConfig
 (7:45)
@@ -154,6 +163,18 @@ Modify the setup so that errors go to stderr and all logs go to a file.
 
 Change the "stdout" handler to "stderr" and set its level to "WARNING".
 Then create a new handler and set its class to "RotatingFileHandler".
+```json
+"handlers": {
+  "file": {
+      "class": "logging.handlers.RotatingFileHandler",
+      "level": "DEBUG",
+      "formatter": "simple",
+      "filename": "logs/my_app.log",
+      "maxBytes": 10000,
+      "backupCount": 3
+  }
+}
+```
 A RotatingFileHandler keeps appending logs to a file until it reaches a certain size,
 and then creates a backup and starts a new file. After reaching the maximum
 number of backups it starts deleting the oldest one.
@@ -161,8 +182,15 @@ number of backups it starts deleting the oldest one.
 We're still using the simple formatter but since we're logging to a file,
 let's include some extra details. We do that by creating a new "detailed"
 formatter and set it as the formatter for the "file" handler.
-
-We include much more information in the format string and we can also show
+```json
+"formatters": {
+  "detailed": {
+    "format": "[%(levelname)s|%(module)s|L%(lineno)d] %(asctime)s: %(message)s",
+    "datefmt": "%Y-%m-%dT%H:%M:%S%z"
+  }
+}
+```
+We include much more information in the format string, and we can also show
 the use of the "datefmt" here, which allows us to customize how dates are printed.
 
 #### Modern Tip #6:
@@ -173,6 +201,8 @@ For a lot of applications, this is a great place to stop.
 
 But if you really care about the quality of your log data,
 then I really suggest making one crucial change.
+
+## Custom formatter
 
 The log file can contain tracebacks and messages could contain newlines.
 This makes it difficult to parse the log file programmatically.

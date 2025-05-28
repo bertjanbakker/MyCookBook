@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 class A:
     pass
 
@@ -39,6 +40,7 @@ class Stream:
 
 def main():
     hierarchy()
+
 
 if __name__ == "__main__":
     main()
